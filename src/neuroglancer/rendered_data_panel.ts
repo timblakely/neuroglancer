@@ -79,6 +79,11 @@ export abstract class RenderedDataPanel extends RenderedPanel {
     this.registerEventListener(element, 'dblclick', () => {
       this.viewer.layerManager.invokeAction('select');
     });
+    this.registerEventListener(element, 'click', (e: MouseEvent) => {
+      if(e.shiftKey) {
+        this.viewer.layerManager.invokeAction('highlight');
+      }
+    });
   }
 
   onMouseout(_event: MouseEvent) {
