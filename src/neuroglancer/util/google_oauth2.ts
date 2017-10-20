@@ -18,6 +18,7 @@ import {CANCELED, uncancelableToken} from './cancellation';
 import {removeFromParent} from './dom';
 import {parseArray, verifyObject, verifyString} from './json';
 import {getRandomHexString} from './random';
+import {CancellationToken} from './cancellation';
 import {Signal} from './signal';
 
 export const AUTH_SERVER = 'https://accounts.google.com/o/oauth2/auth';
@@ -254,3 +255,5 @@ export function authenticateGoogleOAuth2(
   }
   return promise;
 }
+
+export {CancellationToken};

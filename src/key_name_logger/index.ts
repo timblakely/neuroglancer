@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {getEventStrokeIdentifier} from 'neuroglancer/util/keyboard_shortcut_handler';
+import {getEventStrokeIdentifier} from '../neuroglancer/util/keyboard_shortcut_handler';
 
 addEventListener('DOMContentLoaded', function() {
   window.addEventListener('keydown', event => {

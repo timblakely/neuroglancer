@@ -25,7 +25,7 @@ import {DataType} from './data_type';
 import {convertEndian16, convertEndian32, Endianness} from './endian';
 import {pythonLiteralParse} from './json';
 
-interface SupportedDataType {
+export interface SupportedDataType {
   arrayConstructor: TypedArrayConstructor;
   dataType: DataType;
   fixEndianness: (array: ArrayBufferView) => void;

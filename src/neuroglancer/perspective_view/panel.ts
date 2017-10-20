@@ -16,7 +16,7 @@
 
 import {AxesLineHelper} from '../axes_lines';
 import {DisplayContext} from '../display_context';
-import {makeRenderedPanelVisibleLayerTracker, MouseSelectionState} from '../layer';
+import {makeRenderedPanelVisibleLayerTracker, MouseSelectionState, VisibleRenderLayerTracker} from '../layer';
 import {PickIDManager} from '../object_picking';
 import {PerspectiveViewRenderContext, PerspectiveViewRenderLayer} from './render_layer';
 import {RenderedDataPanel} from '../rendered_data_panel';
@@ -24,6 +24,7 @@ import {SliceView, SliceViewRenderHelper} from '../sliceview/frontend';
 import {TrackableBoolean, TrackableBooleanCheckbox} from '../trackable_boolean';
 import {kAxes, mat4, transformVectorByMat4, vec3, vec4} from '../util/geom';
 import {startRelativeMouseDrag} from '../util/mouse_drag';
+import {NavigationState} from '../navigation_state';
 import {ViewerState} from '../viewer_state';
 import {DepthBuffer, FramebufferConfiguration, makeTextureBuffers, OffscreenCopyHelper, TextureBuffer} from '../webgl/offscreen';
 import {ShaderBuilder} from '../webgl/shader';
@@ -432,3 +433,5 @@ export class PerspectivePanel extends RenderedDataPanel {
     this.navigationState.zoomBy(factor);
   }
 }
+
+export {VisibleRenderLayerTracker, NavigationState};

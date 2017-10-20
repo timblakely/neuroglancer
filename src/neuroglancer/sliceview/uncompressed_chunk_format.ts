@@ -27,7 +27,7 @@ import {compute1dTextureFormat, compute3dTextureLayout, OneDimensionalTextureAcc
 import {ShaderBuilder, ShaderProgram} from '../webgl/shader';
 import {getShaderType} from '../webgl/shader_lib';
 
-class TextureLayout extends RefCounted {
+export class TextureLayout extends RefCounted {
   dataWidth: number;
   textureHeight: number;
   textureAccessCoefficients: vec2;
@@ -121,7 +121,7 @@ ${shaderType} getDataValue (int channelIndex) {
   }
 }
 
-interface Source extends VolumeChunkSource {
+export interface Source extends VolumeChunkSource {
   chunkFormatHandler: UncompressedChunkFormatHandler;
 }
 

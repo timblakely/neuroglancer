@@ -26,6 +26,7 @@ import {vec3} from './util/geom';
 import {verifyObject, verifyObjectProperty, verifyOptionalString} from './util/json';
 import {NullarySignal, Signal} from './util/signal';
 import {Trackable} from './util/trackable';
+import {RPC} from './worker_rpc';
 
 export function getVolumeWithStatusMessage(
     chunkManager: ChunkManager, x: string,
@@ -164,7 +165,7 @@ export class LayerListSpecification extends RefCounted implements Trackable {
   }
 }
 
-interface UserLayerConstructor {
+export interface UserLayerConstructor {
   new(manager: LayerListSpecification, x: any): UserLayer;
 }
 
@@ -179,3 +180,5 @@ export function registerVolumeLayerType(
     volumeType: VolumeType, layerConstructor: UserLayerConstructor) {
   volumeLayerTypes.set(volumeType, layerConstructor);
 }
+
+export {RPC};

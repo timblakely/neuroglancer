@@ -71,7 +71,7 @@ export class AnnotationPointListUserLayer extends UserLayer {
   }
 }
 
-class Dropdown extends UserLayerDropdown {
+export class Dropdown extends UserLayerDropdown {
   pointListWidget = this.registerDisposer(
       new PointListWidget(this.layer.layer.pointList, this.layer.selectedIndex));
   constructor(public element: HTMLDivElement, public layer: AnnotationPointListUserLayer) {

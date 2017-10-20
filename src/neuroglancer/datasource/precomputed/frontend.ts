@@ -17,9 +17,9 @@
 import {ChunkManager} from '../../chunk_manager/frontend';
 import {registerDataSourceFactory} from '../factory';
 import {MeshSourceParameters, VolumeChunkEncoding, VolumeChunkSourceParameters} from './base';
-import {defineParameterizedMeshSource} from '../../mesh/frontend';
+import {defineParameterizedMeshSource, ParameterizedMeshSource} from '../../mesh/frontend';
 import {DataType, VolumeChunkSpecification, VolumeSourceOptions, VolumeType} from '../../sliceview/volume/base';
-import {defineParameterizedVolumeChunkSource, MultiscaleVolumeChunkSource as GenericMultiscaleVolumeChunkSource} from '../../sliceview/volume/frontend';
+import {defineParameterizedVolumeChunkSource, MultiscaleVolumeChunkSource as GenericMultiscaleVolumeChunkSource, ParameterizedVolumeChunkSource} from '../../sliceview/volume/frontend';
 import {mat4, vec3} from '../../util/geom';
 import {openShardedHttpRequest, parseSpecialUrl, sendHttpRequest} from '../../util/http_request';
 import {parseArray, parseFixedLengthArray, parseIntVec, verifyEnumString, verifyFinitePositiveFloat, verifyObject, verifyObjectProperty, verifyOptionalString, verifyPositiveInt, verifyString} from '../../util/json';
@@ -27,7 +27,7 @@ import {parseArray, parseFixedLengthArray, parseIntVec, verifyEnumString, verify
 const VolumeChunkSource = defineParameterizedVolumeChunkSource(VolumeChunkSourceParameters);
 const MeshSource = defineParameterizedMeshSource(MeshSourceParameters);
 
-class ScaleInfo {
+export class ScaleInfo {
   key: string;
   encoding: VolumeChunkEncoding;
   resolution: vec3;
@@ -140,3 +140,5 @@ registerDataSourceFactory('precomputed', {
   getVolume: getVolume,
   getMeshSource: getMeshSource,
 });
+
+export {ParameterizedVolumeChunkSource, ParameterizedMeshSource};

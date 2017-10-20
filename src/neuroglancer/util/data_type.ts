@@ -25,7 +25,7 @@ export enum DataType {
   FLOAT32 = 4,
 }
 
-interface DataTypeBytes {
+export interface DataTypeBytes {
   [index: number]: number;
 }
 

@@ -255,27 +255,37 @@ export class FragmentSource extends ChunkSource {
   }
 }
 
+
+export class ParameterizedMeshSource<Parameters> extends MeshSource {
+  parametersConstructor: ChunkSourceParametersConstructor<Parameters>;
+  constructor(chunkManager: ChunkManager, public parameters: Parameters) {
+    super(chunkManager);
+  }
+  initializeCounterpart(rpc: RPC, options: any) {
+    options['parameters'] = this.parameters;
+    super.initializeCounterpart(rpc, options);
+  }
+  static get<Parameters>(chunkManager: ChunkManager, parameters: Parameters) {
+    return chunkManager.getChunkSource(
+        this, stableStringify(parameters), () => new this(chunkManager, parameters));
+  }
+  toString() {
+    return this.parametersConstructor.stringify(this.parameters);
+  }
+};
+
+export interface WithStatic<Parameters> {
+  get(chunkManager: ChunkManager, parameters: Parameters): ParameterizedMeshSource<Parameters>;
+  new(...args: any[]): ParameterizedMeshSource<Parameters>;
+}
+
+
 /**
  * Defines a MeshSource for which all state is encapsulated in an object of type Parameters.
  */
 export function defineParameterizedMeshSource<Parameters>(
-    parametersConstructor: ChunkSourceParametersConstructor<Parameters>) {
-  const newConstructor = class ParameterizedMeshSource extends MeshSource {
-    constructor(chunkManager: ChunkManager, public parameters: Parameters) {
-      super(chunkManager);
-    }
-    initializeCounterpart(rpc: RPC, options: any) {
-      options['parameters'] = this.parameters;
-      super.initializeCounterpart(rpc, options);
-    }
-    static get(chunkManager: ChunkManager, parameters: Parameters) {
-      return chunkManager.getChunkSource(
-          this, stableStringify(parameters), () => new this(chunkManager, parameters));
-    }
-    toString() {
-      return parametersConstructor.stringify(this.parameters);
-    }
-  };
+    parametersConstructor: ChunkSourceParametersConstructor<Parameters>): WithStatic<Parameters> {
+  const newConstructor = class extends ParameterizedMeshSource<Parameters> {};
   newConstructor.prototype.RPC_TYPE_ID = parametersConstructor.RPC_ID;
   return newConstructor;
 }

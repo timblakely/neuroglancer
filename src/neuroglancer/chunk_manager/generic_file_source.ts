@@ -29,13 +29,13 @@ export type PriorityGetter = () => {
   priorityTier: ChunkPriorityTier, priority: number
 };
 
-interface FileDataRequester<Data> {
+export interface FileDataRequester<Data> {
   resolve: (data: Data) => void;
   reject: (error: any) => void;
   getPriority: PriorityGetter;
 }
 
-class GenericFileChunk<Data> extends Chunk {
+export class GenericFileChunk<Data> extends Chunk {
   data?: Data;
   requesters?: Set<FileDataRequester<Data>>;
   backendOnly = true;

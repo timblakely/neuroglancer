@@ -26,6 +26,7 @@ import PairingHeap0 from '../util/pairing_heap.0';
 import PairingHeap1 from '../util/pairing_heap.1';
 import {NullarySignal} from '../util/signal';
 import {initializeSharedObjectCounterpart, registerSharedObject, RPC, SharedObject, SharedObjectCounterpart} from '../worker_rpc';
+import {Constructor, ConstructorWithMixin} from '../util/mixin_helpers';
 
 const DEBUG_CHUNK_UPDATES = false;
 
@@ -140,7 +141,7 @@ export class Chunk implements Disposable {
   }
 }
 
-interface ChunkConstructor<T extends Chunk> {
+export interface ChunkConstructor<T extends Chunk> {
   new(): T;
 }
 
@@ -247,7 +248,7 @@ function cancelChunkDownload(chunk: Chunk) {
   token.cancel();
 }
 
-class ChunkPriorityQueue {
+export class ChunkPriorityQueue {
   /**
    * Heap roots for VISIBLE and PREFETCH priority tiers.
    */
@@ -781,16 +782,18 @@ export interface ChunkRequester extends SharedObject { chunkManager: ChunkManage
  *
  * The resultant class implements `ChunkRequester`.
  */
-export function withChunkManager<T extends{new (...args: any[]): SharedObject}>(Base: T) {
+export function withChunkManager<T extends Constructor<SharedObject>>(Base: T):
+  ConstructorWithMixin<T, ChunkRequester> {
   return class extends Base implements ChunkRequester {
     chunkManager: ChunkManager;
     constructor(...args: any[]) {
       super(...args);
       const rpc: RPC = args[0];
       const options = args[1];
-      // We don't increment the reference count, because our owner owns a reference to the
-      // ChunkManager.
-      this.chunkManager = this.registerDisposer(<ChunkManager>rpc.get(options['chunkManager']));
+      // We don't increment the reference count, because our owner owns a
+      // reference to the ChunkManager.
+      this.chunkManager =
+          this.registerDisposer(<ChunkManager>rpc.get(options['chunkManager']));
     }
   };
 }

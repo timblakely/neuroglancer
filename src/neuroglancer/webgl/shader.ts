@@ -199,10 +199,10 @@ export class ShaderProgram extends RefCounted {
 }
 
 export type ShaderCodePart = string | ShaderCodePartArray | ShaderCodePartFunction;
-interface ShaderCodePartFunction {
+export interface ShaderCodePartFunction {
   (): ShaderCodePart;
 }
-interface ShaderCodePartArray extends Array<ShaderCodePart> {}
+export interface ShaderCodePartArray extends Array<ShaderCodePart> {}
 
 export class ShaderCode {
   code = '';

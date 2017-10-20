@@ -25,9 +25,9 @@ import {RefCounted} from '../util/disposable';
 import {mat4, rectifyTransformMatrixIfAxisAligned, vec3, vec3Key, vec4} from '../util/geom';
 import {getObjectId} from '../util/object_id';
 import {NullarySignal} from '../util/signal';
-import {withSharedVisibility} from '../visibility_priority/frontend';
+import {withSharedVisibility, SharedVisibilityMixin} from '../visibility_priority/frontend';
 import {GL} from '../webgl/context';
-import {FramebufferConfiguration, makeTextureBuffers, StencilBuffer} from '../webgl/offscreen';
+import {FramebufferConfiguration, makeTextureBuffers, StencilBuffer, TextureBuffer} from '../webgl/offscreen';
 import {ShaderBuilder, ShaderModule, ShaderProgram} from '../webgl/shader';
 import {getSquareCornersBuffer} from '../webgl/square_corners_buffer';
 import {registerSharedObjectOwner, RPC} from '../worker_rpc';
@@ -36,7 +36,7 @@ export type GenericChunkKey = string;
 
 const tempMat = mat4.create();
 
-const Base = withSharedVisibility(SliceViewBase);
+export const Base = withSharedVisibility(SliceViewBase);
 
 @registerSharedObjectOwner(SLICEVIEW_RPC_ID)
 export class SliceView extends Base {
@@ -384,3 +384,5 @@ export interface MultiscaleSliceViewChunkSource {
 
   chunkManager: ChunkManager;
 }
+
+export {SharedVisibilityMixin, TextureBuffer};

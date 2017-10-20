@@ -22,21 +22,21 @@
 import {ChunkManager} from '../../chunk_manager/frontend';
 import {registerDataSourceFactory} from '../factory';
 import {MeshSourceParameters, SkeletonSourceParameters, VolumeChunkEncoding, VolumeChunkSourceParameters} from './base';
-import {defineParameterizedMeshSource} from '../../mesh/frontend';
+import {defineParameterizedMeshSource, ParameterizedMeshSource} from '../../mesh/frontend';
 import {VertexAttributeInfo} from '../../skeleton/base';
-import {parameterizedSkeletonSource} from '../../skeleton/frontend';
+import {parameterizedSkeletonSource, SpecializedParameterizedSkeletonSource, SpecializedParameterizedSkeletonSourceWithStatic} from '../../skeleton/frontend';
 import {DataType, DEFAULT_MAX_VOXELS_PER_CHUNK_LOG2, getNearIsotropicBlockSize, getTwoDimensionalBlockSize} from '../../sliceview/base';
 import {VolumeChunkSpecification, VolumeSourceOptions, VolumeType} from '../../sliceview/volume/base';
-import {defineParameterizedVolumeChunkSource, MultiscaleVolumeChunkSource as GenericMultiscaleVolumeChunkSource} from '../../sliceview/volume/frontend';
+import {defineParameterizedVolumeChunkSource, MultiscaleVolumeChunkSource as GenericMultiscaleVolumeChunkSource, ParameterizedVolumeChunkSource} from '../../sliceview/volume/frontend';
 import {mat4, vec3} from '../../util/geom';
 import {openShardedHttpRequest, sendHttpRequest} from '../../util/http_request';
 import {parseArray, parseFixedLengthArray, verify3dDimensions, verify3dScale, verify3dVec, verifyEnumString, verifyObject, verifyObjectAsMap, verifyObjectProperty, verifyPositiveInt, verifyString} from '../../util/json';
 
 const VolumeChunkSource = defineParameterizedVolumeChunkSource(VolumeChunkSourceParameters);
 const MeshSource = defineParameterizedMeshSource(MeshSourceParameters);
-const BaseSkeletonSource = parameterizedSkeletonSource(SkeletonSourceParameters);
+export const BaseSkeletonSource = parameterizedSkeletonSource(SkeletonSourceParameters);
 
-interface ScaleInfo {
+export interface ScaleInfo {
   key: string;
   offset: vec3;
   sizeInVoxels: vec3;
@@ -226,3 +226,5 @@ registerDataSourceFactory('python', {
   getVolume: getVolume,
   getSkeletonSource: getSkeletonSource,
 });
+
+export {ParameterizedVolumeChunkSource, ParameterizedMeshSource, SpecializedParameterizedSkeletonSource, SpecializedParameterizedSkeletonSourceWithStatic};

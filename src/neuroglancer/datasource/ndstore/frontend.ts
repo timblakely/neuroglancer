@@ -23,11 +23,12 @@ import {ChunkManager} from '../../chunk_manager/frontend';
 import {CompletionResult, registerDataSourceFactory} from '../factory';
 import {NDSTORE_URL_PREFIX, VolumeChunkSourceParameters} from './base';
 import {DataType, VolumeChunkSpecification, VolumeSourceOptions, VolumeType} from '../../sliceview/volume/base';
-import {defineParameterizedVolumeChunkSource, MultiscaleVolumeChunkSource as GenericMultiscaleVolumeChunkSource} from '../../sliceview/volume/frontend';
+import {defineParameterizedVolumeChunkSource, MultiscaleVolumeChunkSource as GenericMultiscaleVolumeChunkSource, ParameterizedVolumeChunkSource} from '../../sliceview/volume/frontend';
 import {applyCompletionOffset, getPrefixMatchesWithDescriptions} from '../../util/completion';
 import {mat4, vec3} from '../../util/geom';
 import {openShardedHttpRequest, sendHttpRequest} from '../../util/http_request';
 import {parseArray, parseQueryStringParameters, verify3dDimensions, verify3dScale, verify3dVec, verifyEnumString, verifyInt, verifyObject, verifyObjectAsMap, verifyObjectProperty, verifyOptionalString, verifyString} from '../../util/json';
+
 
 let serverVolumeTypes = new Map<string, VolumeType>();
 serverVolumeTypes.set('image', VolumeType.IMAGE);
@@ -37,14 +38,14 @@ const VALID_ENCODINGS = new Set<string>(['npz', 'raw', 'jpeg']);
 
 const VolumeChunkSource = defineParameterizedVolumeChunkSource(VolumeChunkSourceParameters);
 
-interface ChannelInfo {
+export interface ChannelInfo {
   channelType: string;
   volumeType: VolumeType;
   dataType: DataType;
   description: string;
 }
 
-interface ScaleInfo {
+export interface ScaleInfo {
   voxelSize: vec3;
   voxelOffset: vec3;
   imageSize: vec3;
@@ -74,7 +75,7 @@ function parseScales(datasetObj: any): ScaleInfo[] {
   });
 }
 
-interface TokenInfo {
+export interface TokenInfo {
   channels: Map<string, ChannelInfo>;
   scales: ScaleInfo[];
 }
@@ -305,3 +306,5 @@ registerDataSourceFactory('ndstore', {
   volumeCompleter: volumeCompleter,
   getVolume: getVolume,
 });
+
+export {ParameterizedVolumeChunkSource};

@@ -270,7 +270,7 @@ function makeSkeletonShaderCodeWidget(layer: SegmentationUserLayer) {
   });
 }
 
-class SegmentationDropdown extends UserLayerDropdown {
+export class SegmentationDropdown extends UserLayerDropdown {
   visibleSegmentWidget = this.registerDisposer(new SegmentSetWidget(this.layer.displayState));
   addSegmentWidget = this.registerDisposer(new Uint64EntryWidget());
   selectedAlphaWidget =

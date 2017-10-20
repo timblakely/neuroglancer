@@ -18,8 +18,10 @@ import {ChunkManager} from '../chunk_manager/frontend';
 import {RenderLayer as GenericRenderLayer} from '../layer';
 import {SliceView, SliceViewChunkSource} from './frontend';
 import {BoundingBox, vec3} from '../util/geom';
+import {WatchableValue} from '../trackable_value';
 import {makeWatchableShaderError, WatchableShaderError} from '../webgl/dynamic_shader';
-import {ShaderBuilder, ShaderProgram} from '../webgl/shader';
+import {ShaderBuilder, ShaderProgram, ShaderCompilationError, ShaderLinkError} from '../webgl/shader';
+import {GL} from '../webgl/context';
 import {RpcId} from '../worker_rpc';
 
 const tempVec3 = vec3.create();
@@ -127,3 +129,5 @@ export abstract class RenderLayer extends GenericRenderLayer {
   abstract endSlice(shader: ShaderProgram): void;
   abstract draw(sliceView: SliceView): void;
 }
+
+export {WatchableValue, ShaderLinkError, ShaderCompilationError, GL};

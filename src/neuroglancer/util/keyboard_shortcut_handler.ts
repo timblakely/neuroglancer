@@ -18,7 +18,7 @@
 
 import {RefCounted} from './disposable';
 
-type Handler = (action: string) => boolean;
+export type Handler = (action: string) => boolean;
 
 const MAX_KEY_SEQUENCE_DELAY = 1500;  // 1.5 sec
 
@@ -140,7 +140,7 @@ export function getEventStrokeIdentifier(event: KeyboardEvent) {
 
 type KeyStrokeMap = Map<string, any>;
 
-type KeySequence = string|string[];
+export type KeySequence = string|string[];
 
 export type KeyStrokeIdentifier = string;
 
@@ -151,7 +151,7 @@ const enum Modifiers {
   SHIFT = 8,
 }
 
-type ModifierMask = number;
+export type ModifierMask = number;
 
 export function getEventModifierMask(event: KeyboardEvent) {
   return (event.ctrlKey ? Modifiers.CONTROL : 0) | (event.altKey ? Modifiers.ALT : 0) |
@@ -230,7 +230,7 @@ export function formatKeySequence(sequence: string[]) {
   return JSON.stringify(sequence.join(' '));
 }
 
-interface Bindings {
+export interface Bindings {
   [keySequenceSpec: string]: string;
 }
 
@@ -294,7 +294,7 @@ export class KeySequenceMap {
   }
 }
 
-interface HandlerStackEntry {
+export interface HandlerStackEntry {
   keySequenceMap: KeySequenceMap;
   handler: Handler;
   identifier: any;

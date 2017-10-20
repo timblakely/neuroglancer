@@ -35,7 +35,7 @@ import {vec3} from './util/geom';
 import {globalKeyboardHandlerStack, KeySequenceMap} from './util/keyboard_shortcut_handler';
 import {NullarySignal} from './util/signal';
 import {CompoundTrackable} from './util/trackable';
-import {DataDisplayLayout, LAYOUTS} from './viewer_layouts';
+import {DataDisplayLayout, LAYOUTS, ViewerUIState} from './viewer_layouts';
 import {ViewerState, VisibilityPrioritySpecification} from './viewer_state';
 import {WatchableVisibilityPriority} from './visibility_priority/frontend';
 import {GL} from './webgl/context';
@@ -387,3 +387,5 @@ export class Viewer extends RefCounted implements ViewerState {
     this.mouseState.stale = true;
   }
 }
+
+export {ViewerUIState};

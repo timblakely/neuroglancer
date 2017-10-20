@@ -19,6 +19,7 @@ import {SliceView} from '../frontend';
 import {VectorGraphicsSourceOptions} from './base';
 import {MultiscaleVectorGraphicsChunkSource, RenderLayer as GenericVectorGraphicsRenderLayer, VectorGraphicsChunkSource} from './frontend';
 import {TrackableAlphaValue, trackableAlphaValue} from '../../trackable_alpha';
+import {TrackableValue} from '../../trackable_value';
 import {TrackableFiniteFloat, trackableFiniteFloat} from '../../trackable_finite_float';
 import {trackableVec3, TrackableVec3} from '../../trackable_vec3';
 import {mat4, vec3} from '../../util/geom';
@@ -90,28 +91,28 @@ export class VectorGraphicsLineRenderLayer extends GenericVectorGraphicsRenderLa
     builder.addAttribute('highp vec3', 'aVertexSecond');
     builder.addUniform('highp mat4', 'uProjection');
 
-    builder.setFragmentMain(`    
+    builder.setFragmentMain(`
 float distance = length(vNormal);
 
 float antialiasing = 0.5;
 
 if (distance >= 1.0 - antialiasing) {
-  emitRGBA(vec4(uColor, (distance - 1.0) / -antialiasing )); 
+  emitRGBA(vec4(uColor, (distance - 1.0) / -antialiasing ));
 }
 else if (distance < 1.0 - antialiasing) {
   emitRGB(uColor);
 }
 `);
     builder.setVertexMain(`
-vec3 direction = vec3(0., 0., 0.); 
+vec3 direction = vec3(0., 0., 0.);
 direction.z = aNormalDirection;
 
 vec3 difference = aVertexSecond - aVertexFirst;
-difference.z = 0.; 
+difference.z = 0.;
 
 vec3 normal = cross(difference, direction);
-normal = normalize(normal); 
-vNormal = normal; 
+normal = normalize(normal);
+vNormal = normal;
 
 vec4 delta = vec4(normal * ulineWidth, 0.0);
 vec4 pos = vec4(aVertexFirst * aVertexIndex.x + aVertexSecond * aVertexIndex.y, 1.0);
@@ -224,3 +225,5 @@ gl_Position = uProjection * (pos + delta);
     this.endSlice(shader);
   }
 }
+
+export {TrackableValue};

@@ -16,7 +16,7 @@
 
 import 'codemirror/addon/lint/lint.js';
 
-import CodeMirror from 'codemirror';
+import * as CodeMirror from 'codemirror';
 import debounce from 'lodash/debounce';
 import {WatchableValue} from '../trackable_value';
 import {RefCounted} from '../util/disposable';
@@ -35,7 +35,7 @@ require<(codeMirror: typeof CodeMirror) => void>('glsl-editor/glsl')(CodeMirror)
  */
 const SHADER_UPDATE_DELAY = 500;
 
-interface ShaderCodeState {
+export interface ShaderCodeState {
   shaderError: WatchableShaderError;
   fragmentMain: WatchableValue<string>;
   fragmentMainStartLine: string;

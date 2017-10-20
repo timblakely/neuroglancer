@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-interface Node<T> {
+export interface Node<T> {
   next1: T|null;
   prev1: T|null;
 }

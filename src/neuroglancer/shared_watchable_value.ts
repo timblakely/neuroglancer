@@ -20,6 +20,7 @@
 
 import {WatchableValue} from './trackable_value';
 import {registerRPC, registerSharedObject, RPC, SharedObjectCounterpart} from './worker_rpc';
+import {NullarySignal} from './util/signal';
 
 const CHANGED_RPC_METHOD_ID = 'SharedWatchableValue.changed';
 
@@ -90,3 +91,5 @@ registerRPC(CHANGED_RPC_METHOD_ID, function(x) {
   obj.base.value = x['value'];
   obj.updatingValue_ = false;
 });
+
+export {NullarySignal};

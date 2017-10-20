@@ -87,7 +87,7 @@ registerRPC(PROMISE_RESPONSE_ID, function(this: RPC, x: any) {
   }
 });
 
-interface RPCTarget {
+export interface RPCTarget {
   postMessage(message?: any, ports?: any): void;
   onmessage: (ev: MessageEvent) => any;
 }

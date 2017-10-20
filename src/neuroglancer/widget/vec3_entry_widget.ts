@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {TrackableVec3} from '../trackable_vec3.ts';
+import {TrackableVec3} from '../trackable_vec3';
 import {RefCounted} from '../util/disposable';
 import {vec3} from '../util/geom';
 import {verifyFiniteFloat} from '../util/json';

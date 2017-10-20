@@ -109,10 +109,10 @@ describe('signal', () => {
     });
     signal.dispatch();
     expect(result).toEqual('a');
-    expect(removalFunction()).toEqual(true);
+    expect(removalFunction()).toBeTruthy();
     signal.dispatch();
     expect(result).toEqual('a');
-    expect(removalFunction()).toEqual(false);
+    expect(removalFunction()).toBeFalsy();
   });
 
   it('NullarySignal works', () => {

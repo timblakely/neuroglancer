@@ -213,7 +213,7 @@ function writeEncodedRepresentation(
   }
 }
 
-type ValueTableCache = Map<string, number>;
+export type ValueTableCache = Map<string, number>;
 
 export function writeBlock(
     output: Uint32ArrayBuilder, baseOffset: number, cache: ValueTableCache,
@@ -264,7 +264,7 @@ export function writeBlock(
   return [encodedBits, tableOffset];
 }
 
-type EncodeBlockFunction =
+export type EncodeBlockFunction =
     (rawData: Uint32Array, inputOffset: number, inputStrides: ArrayLike<number>,
      blockSize: ArrayLike<number>, actualSize: ArrayLike<number>, baseOffset: number,
      cache: ValueTableCache, output: Uint32ArrayBuilder) => [number, number];

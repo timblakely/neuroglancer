@@ -165,30 +165,38 @@ export abstract class VolumeChunkSource extends SliceViewChunkSource implements
   }
 }
 
+export class ParameterizedVolumeChunkSource<Parameters> extends VolumeChunkSource {
+  parametersConstructor: ChunkSourceParametersConstructor<Parameters>;
+  constructor(
+      chunkManager: ChunkManager, spec: VolumeChunkSpecification, public parameters: Parameters) {
+    super(chunkManager, spec);
+  }
+  initializeCounterpart(rpc: RPC, options: any) {
+    options['parameters'] = this.parameters;
+    super.initializeCounterpart(rpc, options);
+  }
+  static get<Parameters>(chunkManager: ChunkManager, spec: VolumeChunkSpecification, parameters: Parameters) {
+    return chunkManager.getChunkSource(
+        this, stableStringify({parameters, spec: spec.toObject()}),
+        () => new this(chunkManager, spec, parameters));
+  }
+  toString() {
+    return this.parametersConstructor.stringify(this.parameters);
+  }
+};
+
+export interface WithStatic<Parameters> {
+  get(chunkManager: ChunkManager, spec: VolumeChunkSpecification, parameters: Parameters): ParameterizedVolumeChunkSource<Parameters>;
+  new(...args: any[]): ParameterizedVolumeChunkSource<Parameters>;
+}
+
 /**
  * Defines a VolumeChunkSource for which all state, other than the VolumeChunkSpecification, is
  * encapsulated in an object of type Parameters.
  */
 export function defineParameterizedVolumeChunkSource<Parameters>(
-    parametersConstructor: ChunkSourceParametersConstructor<Parameters>) {
-  const newConstructor = class ParameterizedVolumeChunkSource extends VolumeChunkSource {
-    constructor(
-        chunkManager: ChunkManager, spec: VolumeChunkSpecification, public parameters: Parameters) {
-      super(chunkManager, spec);
-    }
-    initializeCounterpart(rpc: RPC, options: any) {
-      options['parameters'] = this.parameters;
-      super.initializeCounterpart(rpc, options);
-    }
-    static get(chunkManager: ChunkManager, spec: VolumeChunkSpecification, parameters: Parameters) {
-      return chunkManager.getChunkSource(
-          this, stableStringify({parameters, spec: spec.toObject()}),
-          () => new this(chunkManager, spec, parameters));
-    }
-    toString() {
-      return parametersConstructor.stringify(this.parameters);
-    }
-  };
+    parametersConstructor: ChunkSourceParametersConstructor<Parameters>): WithStatic<Parameters> {
+  const newConstructor = class extends ParameterizedVolumeChunkSource<Parameters> {};
   newConstructor.prototype.RPC_TYPE_ID = parametersConstructor.RPC_ID;
   return newConstructor;
 }

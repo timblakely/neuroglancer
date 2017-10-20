@@ -23,6 +23,7 @@ import {MultiscaleVectorGraphicsChunkSource, RenderLayer} from './sliceview/vect
 import {VectorGraphicsLineRenderLayer} from './sliceview/vector_graphics/vector_graphics_line_renderlayer';
 import {StatusMessage} from './status';
 import {trackableAlphaValue} from './trackable_alpha';
+import {TrackableValue} from './trackable_value';
 import {trackableFiniteFloat} from './trackable_finite_float';
 import {trackableVec3, TrackableVec3} from './trackable_vec3';
 import {vec3} from './util/geom';
@@ -110,7 +111,7 @@ export class VectorGraphicsUserLayer extends UserLayer {
   }
 }
 
-class VectorGraphicsDropDown extends UserLayerDropdown {
+export class VectorGraphicsDropDown extends UserLayerDropdown {
   opacityWidget = this.registerDisposer(new RangeWidget(this.layer.opacity));
   lineWidthWidget =
       this.registerDisposer(new RangeWidget(this.layer.lineWidth, {min: 0, max: 50, step: 1}));
@@ -150,7 +151,7 @@ class VectorGraphicsDropDown extends UserLayerDropdown {
 }
 
 
-class VectorGraphicsColorWidget extends Vec3Widget {
+export class VectorGraphicsColorWidget extends Vec3Widget {
   constructor(model: TrackableVec3) {
     super(model);
   }
@@ -179,3 +180,5 @@ class VectorGraphicsColorWidget extends Vec3Widget {
 
 registerLayerType('line', VectorGraphicsUserLayer);
 // registerLayerType('point', VectorGraphicsUserLayer);
+
+export {TrackableValue};

@@ -19,9 +19,10 @@ import {VolumeSourceOptions} from './base';
 import {MultiscaleVolumeChunkSource} from './frontend';
 import {RenderLayer} from './renderlayer';
 import {TrackableAlphaValue, trackableAlphaValue} from '../../trackable_alpha';
+import {TrackableValue, WatchableValue} from '../../trackable_value';
 import {vec3} from '../../util/geom';
 import {makeTrackableFragmentMain, makeWatchableShaderError, TrackableFragmentMain} from '../../webgl/dynamic_shader';
-import {ShaderBuilder} from '../../webgl/shader';
+import {ShaderBuilder, ShaderProgram, ShaderLinkError, ShaderCompilationError} from '../../webgl/shader';
 
 export const FRAGMENT_MAIN_START = '//NEUROGLANCER_IMAGE_RENDERLAYER_FRAGMENT_MAIN_START';
 
@@ -101,3 +102,5 @@ void emitTransparent() {
     return shader;
   }
 }
+
+export {TrackableValue, ShaderLinkError, ShaderCompilationError, ShaderProgram, WatchableValue};

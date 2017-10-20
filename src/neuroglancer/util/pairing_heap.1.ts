@@ -17,7 +17,7 @@
 
 import {PairingHeapOperations} from './pairing_heap';
 
-interface Node<T> {
+export interface Node<T> {
   child1: T|null;
   next1: T|null;
   prev1: T|null;

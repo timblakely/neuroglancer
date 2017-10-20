@@ -16,9 +16,12 @@
     "newLine": "LF",
     "baseUrl": ".",
     "paths": {
-      "*": ["*"]
+      "*": [
+        "*"
+      ]
     },
-    "typeRoots": []
+    "typeRoots": [],
+    "declaration": true
   },
   "exclude": [
     "node_modules",

@@ -18,6 +18,7 @@ import {SharedWatchableValue} from '../shared_watchable_value';
 import {WatchableValue} from '../trackable_value';
 import {RPC} from '../worker_rpc';
 import {SharedObject} from '../worker_rpc';
+import {Constructor, ConstructorWithMixin} from '../util/mixin_helpers';
 
 /**
  * Numeric value specifying a visibility or prefetch priority.
@@ -84,10 +85,14 @@ export class VisibilityPriorityAggregator extends WatchableVisibilityPriority {
   }
 }
 
+export interface SharedVisibilityMixin {
+  visibility: VisibilityPriorityAggregator;
+}
+
 /**
  * Mixin that adds a `visibility` property which is shared with the counterpart.
  */
-export function withSharedVisibility<T extends{new (...args: any[]): SharedObject}>(Base: T) {
+export function withSharedVisibility<T extends Constructor<SharedObject>>(Base: T): ConstructorWithMixin<T, SharedVisibilityMixin> {
   return class extends Base {
     visibility = new VisibilityPriorityAggregator();
 

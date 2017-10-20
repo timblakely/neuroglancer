@@ -24,18 +24,22 @@
 // http://www.cg.informatik.uni-siegen.de/data/Publications/2005/rezksalamaVMV2005.pdf
 
 import {ChunkState} from '../../chunk_manager/base';
+import {ChunkFormat} from '../volume/frontend';
 import {SliceView} from '../frontend';
 import {RenderLayer as GenericSliceViewRenderLayer} from '../renderlayer';
 import {VOLUME_RENDERLAYER_RPC_ID, VolumeChunkSpecification, VolumeSourceOptions} from './base';
 import {MultiscaleVolumeChunkSource, VolumeChunkSource} from './frontend';
 import {RefCounted} from '../../util/disposable';
+import {WatchableValue} from '../../trackable_value';
 import {mat4, vec3, vec3Key} from '../../util/geom';
 import {Buffer} from '../../webgl/buffer';
 import {GL} from '../../webgl/context';
 import {makeWatchableShaderError} from '../../webgl/dynamic_shader';
-import {ShaderBuilder, ShaderProgram} from '../../webgl/shader';
+import {ShaderBuilder, ShaderProgram, ShaderLinkError, ShaderCompilationError} from '../../webgl/shader';
 import {getShaderType} from '../../webgl/shader_lib';
 import {SharedObject} from '../../worker_rpc';
+import {DataType} from '../../util/data_type';
+
 
 const DEBUG_VERTICES = false;
 
@@ -179,7 +183,7 @@ export class SliceViewShaderBuffers extends RefCounted {
   }
 }
 
-class VolumeSliceVertexComputationManager extends RefCounted {
+export class VolumeSliceVertexComputationManager extends RefCounted {
   data: SliceViewShaderBuffers;
   static get(gl: GL) {
     return gl.memoize.get(
@@ -522,3 +526,5 @@ ${getShaderType(this.dataType)} getDataValue() { return getDataValue(0); }
     this.endSlice(shader);
   }
 }
+
+export {ShaderLinkError, ShaderCompilationError, WatchableValue, DataType, ChunkFormat};

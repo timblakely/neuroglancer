@@ -23,7 +23,7 @@ import {ChunkManager} from '../../chunk_manager/frontend';
 import {CompletionResult, registerDataSourceFactory} from '../factory';
 import {PointMatchChunkSourceParameters, TileChunkSourceParameters} from './base';
 import {VectorGraphicsChunkSpecification, VectorGraphicsSourceOptions} from '../../sliceview/vector_graphics/base';
-import {defineParameterizedVectorGraphicsSource, MultiscaleVectorGraphicsChunkSource as GenericMultiscaleVectorGraphicsChunkSource} from '../../sliceview/vector_graphics/frontend';
+import {defineParameterizedVectorGraphicsSource, MultiscaleVectorGraphicsChunkSource as GenericMultiscaleVectorGraphicsChunkSource, SpecializedParameterizedVectorGraphicsSource} from '../../sliceview/vector_graphics/frontend';
 import {DataType, VolumeChunkSpecification, VolumeSourceOptions, VolumeType} from '../../sliceview/volume/base';
 import {defineParameterizedVolumeChunkSource, MultiscaleVolumeChunkSource as GenericMultiscaleVolumeChunkSource, VolumeChunkSource} from '../../sliceview/volume/frontend';
 import {applyCompletionOffset, getPrefixMatchesWithDescriptions} from '../../util/completion';
@@ -38,16 +38,16 @@ const PointMatchSource = defineParameterizedVectorGraphicsSource(PointMatchChunk
 
 const VALID_STACK_STATES = new Set<string>(['COMPLETE']);
 
-interface OwnerInfo {
+export interface OwnerInfo {
   owner: string;
   projects: Map<string, ProjectInfo>;
 }
 
-interface ProjectInfo {
+export interface ProjectInfo {
   stacks: Map<string, StackInfo>;
 }
 
-interface StackInfo {
+export interface StackInfo {
   lowerVoxelBound: vec3;
   upperVoxelBound: vec3;
   voxelResolution: vec3; /* in nm */
@@ -526,3 +526,5 @@ registerDataSourceFactory('render', {
   getVolume: getVolume,
   getVectorGraphicsSource: getPointMatches,
 });
+
+export {SpecializedParameterizedVectorGraphicsSource};

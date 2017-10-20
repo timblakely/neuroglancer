@@ -160,7 +160,7 @@ function makeShaderCodeWidget(layer: SingleMeshUserLayer) {
  */
 const SHADER_UPDATE_DELAY = 500;
 
-class VertexAttributeWidget extends RefCounted {
+export class VertexAttributeWidget extends RefCounted {
   element = document.createElement('div');
 
   attributeNameElements: HTMLInputElement[]|undefined;
@@ -257,7 +257,7 @@ function makeVertexAttributeWidget(layer: SingleMeshUserLayer) {
       () => layer.meshSource && layer.meshSource.info.vertexAttributes);
 }
 
-class SingleMeshDropdown extends UserLayerDropdown {
+export class SingleMeshDropdown extends UserLayerDropdown {
   attributeWidget = this.registerDisposer(makeVertexAttributeWidget(this.layer));
   codeWidget = this.registerDisposer(makeShaderCodeWidget(this.layer));
   constructor(public element: HTMLDivElement, public layer: SingleMeshUserLayer) {

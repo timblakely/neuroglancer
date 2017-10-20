@@ -19,7 +19,7 @@ import {Chunk, ChunkManager, ChunkSource} from '../chunk_manager/frontend';
 import {CoordinateTransform} from '../coordinate_transform';
 import {PerspectiveViewRenderContext, PerspectiveViewRenderLayer} from '../perspective_view/render_layer';
 import {GET_SINGLE_MESH_INFO_RPC_ID, SINGLE_MESH_CHUNK_KEY, SINGLE_MESH_LAYER_RPC_ID, SINGLE_MESH_SOURCE_RPC_ID, SingleMeshInfo, SingleMeshSourceParameters, VertexAttributeInfo} from './base';
-import {TrackableValue} from '../trackable_value';
+import {TrackableValue, WatchableValue} from '../trackable_value';
 import {DataType} from '../util/data_type';
 import {mat4, vec2, vec3} from '../util/geom';
 import {parseArray, stableStringify, verifyOptionalString, verifyString} from '../util/json';
@@ -31,7 +31,7 @@ import {GL} from '../webgl/context';
 import {makeWatchableShaderError} from '../webgl/dynamic_shader';
 import {CountingBuffer, countingBufferShaderModule, disableCountingBuffer, getCountingBuffer, IndexBufferAttributeHelper, makeIndexBuffer} from '../webgl/index_emulation';
 import {compute1dTextureFormat, compute1dTextureLayout, OneDimensionalTextureAccessHelper, OneDimensionalTextureFormat, setOneDimensionalTextureData} from '../webgl/one_dimensional_texture_access';
-import {ShaderBuilder, ShaderModule, ShaderProgram} from '../webgl/shader';
+import {ShaderBuilder, ShaderModule, ShaderProgram, ShaderCompilationError, ShaderLinkError} from '../webgl/shader';
 import {getShaderType, glsl_addUint32, glsl_divmodUint32, setVec4FromUint32} from '../webgl/shader_lib';
 import {registerSharedObjectOwner, RPC, SharedObject} from '../worker_rpc';
 
@@ -520,3 +520,5 @@ export function getSingleMeshSource(
               SingleMeshSource, stableStringify([parameters, info]),
               () => new SingleMeshSource(chunkManager, parameters, info)));
 }
+
+export {WatchableValue, ShaderLinkError, ShaderCompilationError};

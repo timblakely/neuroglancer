@@ -24,7 +24,7 @@ import {RefCounted} from '../util/disposable';
 import {vec4} from '../util/geom';
 import {NullarySignal} from '../util/signal';
 import {Uint64} from '../util/uint64';
-import {withSharedVisibility} from '../visibility_priority/frontend';
+import {withSharedVisibility, SharedVisibilityMixin} from '../visibility_priority/frontend';
 import {SharedObject} from '../worker_rpc';
 
 export class Uint64MapEntry {
@@ -152,7 +152,7 @@ export function forEachSegmentToDraw<SegmentData>(
   });
 }
 
-const Base = withSharedVisibility(SharedObject);
+export const Base = withSharedVisibility(SharedObject);
 export class SegmentationLayerSharedObject extends Base {
   constructor(public chunkManager: ChunkManager, public displayState: SegmentationDisplayState) {
     super();
@@ -168,3 +168,5 @@ export class SegmentationLayerSharedObject extends Base {
     super.initializeCounterpart(this.chunkManager.rpc!, options);
   }
 }
+
+export {SharedVisibilityMixin};

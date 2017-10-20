@@ -22,10 +22,11 @@
 import {ChunkManager} from '../../chunk_manager/frontend';
 import {registerDataSourceFactory} from '../factory';
 import {GET_NIFTI_VOLUME_INFO_RPC_ID, NiftiVolumeInfo, VolumeSourceParameters} from './base';
-import {VolumeChunkSpecification, VolumeSourceOptions} from '../../sliceview/volume/base';
-import {defineParameterizedVolumeChunkSource, MultiscaleVolumeChunkSource as GenericMultiscaleVolumeChunkSource} from '../../sliceview/volume/frontend';
+import {VolumeChunkSpecification, VolumeSourceOptions, VolumeType} from '../../sliceview/volume/base';
+import {defineParameterizedVolumeChunkSource, MultiscaleVolumeChunkSource as GenericMultiscaleVolumeChunkSource, ParameterizedVolumeChunkSource} from '../../sliceview/volume/frontend';
 import {CancellationToken, uncancelableToken} from '../../util/cancellation';
 import {kOneVec, mat4, translationRotationScaleZReflectionToMat4} from '../../util/geom';
+import {DataType} from '../../util/data_type';
 
 export class MultiscaleVolumeChunkSource implements GenericMultiscaleVolumeChunkSource {
   constructor(public chunkManager: ChunkManager, public url: string, public info: NiftiVolumeInfo) {
@@ -80,3 +81,5 @@ registerDataSourceFactory('nifti', {
   description: 'Single NIfTI file',
   getVolume: getVolume,
 });
+
+export {DataType, VolumeType, ParameterizedVolumeChunkSource};

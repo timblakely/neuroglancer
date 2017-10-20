@@ -16,6 +16,7 @@
 
 import {makeDefaultKeyBindings} from '../default_key_bindings';
 import {makeDefaultViewer} from '../default_viewer';
+import {Viewer} from '../viewer';
 import {bindDefaultCopyHandler, bindDefaultPasteHandler} from './default_clipboard_handling';
 import {UrlHashBinding} from './url_hash_binding';
 
@@ -34,3 +35,5 @@ export function setupDefaultViewer() {
 
   return viewer;
 }
+
+export {Viewer};

@@ -53,7 +53,7 @@ export interface CancellationToken {
   remove(handler: () => void): void;
 }
 
-class CancellationError {
+export class CancellationError {
   name = 'CancellationError';
   message = 'CANCELED';
   toString() {

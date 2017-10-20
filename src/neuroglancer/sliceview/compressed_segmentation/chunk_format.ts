@@ -28,7 +28,7 @@ import {compute1dTextureFormat, compute1dTextureLayout, OneDimensionalTextureAcc
 import {ShaderBuilder, ShaderProgram} from '../../webgl/shader';
 import {getShaderType, glsl_getFortranOrderIndexFromNormalized, glsl_uint64, glsl_uintleToFloat, glsl_unnormalizeUint8} from '../../webgl/shader_lib';
 
-class TextureLayout extends RefCounted {
+export class TextureLayout extends RefCounted {
   dataWidth: number;
   textureHeight: number;
   textureAccessCoefficients: vec2;

@@ -27,6 +27,7 @@ import {RefCounted} from './util/disposable';
 import {removeChildren} from './util/dom';
 import {quat} from './util/geom';
 import {VisibilityPrioritySpecification} from './viewer_state';
+import {WatchableVisibilityPriority} from './visibility_priority/frontend';
 
 export interface SliceViewViewerState {
   chunkManager: ChunkManager;
@@ -247,3 +248,5 @@ export const LAYOUTS:
       ['xy', (element, viewer) => new SinglePanelLayout(element, viewer)],
       ['3d', (element, viewer) => new SinglePerspectiveLayout(element, viewer)],
     ];
+
+export {WatchableVisibilityPriority};

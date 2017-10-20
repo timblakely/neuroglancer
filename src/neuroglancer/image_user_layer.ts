@@ -22,7 +22,9 @@ import {Overlay} from './overlay';
 import {VolumeType} from './sliceview/volume/base';
 import {FRAGMENT_MAIN_START, getTrackableFragmentMain, ImageRenderLayer} from './sliceview/volume/image_renderlayer';
 import {trackableAlphaValue} from './trackable_alpha';
+import {TrackableValue, WatchableValue} from './trackable_value';
 import {mat4} from './util/geom';
+import {ShaderLinkError, ShaderCompilationError} from './webgl/shader';
 import {makeWatchableShaderError} from './webgl/dynamic_shader';
 import {RangeWidget} from './widget/range';
 import {ShaderCodeWidget} from './widget/shader_code_widget';
@@ -85,7 +87,7 @@ function makeShaderCodeWidget(layer: ImageUserLayer) {
   });
 }
 
-class ImageDropdown extends UserLayerDropdown {
+export class ImageDropdown extends UserLayerDropdown {
   opacityWidget = this.registerDisposer(new RangeWidget(this.layer.opacity));
   codeWidget = this.registerDisposer(makeShaderCodeWidget(this.layer));
   constructor(public element: HTMLDivElement, public layer: ImageUserLayer) {
@@ -144,3 +146,5 @@ class ShaderCodeOverlay extends Overlay {
 
 registerLayerType('image', ImageUserLayer);
 registerVolumeLayerType(VolumeType.IMAGE, ImageUserLayer);
+
+export {TrackableValue, ShaderLinkError, ShaderCompilationError, WatchableValue};

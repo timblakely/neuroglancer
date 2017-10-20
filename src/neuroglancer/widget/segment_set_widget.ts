@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-import {SegmentationDisplayState} from '../segmentation_display_state/frontend';
+import {SegmentationDisplayState, SegmentSelectionState} from '../segmentation_display_state/frontend';
 import {RefCounted} from '../util/disposable';
 import {Uint64} from '../util/uint64';
+
+import {Uint64Set} from '../uint64_set';
+import {SegmentColorHash} from '../segment_color';
 
 require('../noselect.css');
 require('./segment_set_widget.css');
@@ -141,3 +144,5 @@ export class SegmentSetWidget extends RefCounted {
     super.disposed();
   }
 }
+
+export {SegmentSelectionState, Uint64Set, SegmentColorHash};

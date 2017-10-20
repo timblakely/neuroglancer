@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {ManagedUserLayer, UserLayer, UserLayerDropdown} from './layer';
+import {ManagedUserLayer, UserLayer, UserLayerDropdown, LayerManager} from './layer';
 import {LayerDialog} from './layer_dialog';
 import {LayerListSpecification, ManagedUserLayerWithSpecification} from './layer_specification';
 import {RefCounted} from './util/disposable';
@@ -290,3 +290,5 @@ export class LayerPanel extends RefCounted {
     new LayerDialog(this.manager);
   }
 }
+
+export {LayerManager};

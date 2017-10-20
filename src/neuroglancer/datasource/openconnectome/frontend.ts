@@ -19,9 +19,9 @@
  */
 
 import {ChunkManager} from '../../chunk_manager/frontend';
-import {registerDataSourceFactory} from '../factory';
+import {registerDataSourceFactory, CompletionResult} from '../factory';
 import {LEGACY_URL_PREFIX} from '../ndstore/base';
-import {getShardedVolume, tokenAndChannelCompleter} from '../ndstore/frontend';
+import {getShardedVolume, tokenAndChannelCompleter, MultiscaleVolumeChunkSource} from '../ndstore/frontend';
 
 const HOSTNAMES = ['http://openconnecto.me', 'http://www.openconnecto.me'];
 
@@ -38,3 +38,5 @@ registerDataSourceFactory('openconnectome', {
   getVolume,
   volumeCompleter,
 });
+
+export {MultiscaleVolumeChunkSource, CompletionResult};

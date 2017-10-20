@@ -21,11 +21,17 @@ import {ChunkPriorityTier, PREFETCH_PRIORITY_MULTIPLIER} from '../chunk_manager/
 import {SharedWatchableValue} from '../shared_watchable_value';
 import {RPC} from '../worker_rpc';
 
+import {Constructor, ConstructorWithMixin} from '../util/mixin_helpers';
+
+export interface SharedVisibilityMixin {
+  visibility: SharedWatchableValue<number>;
+}
+
 /**
  * Mixin for adding a visibility shared property to a ChunkRequester.  Calls
  * `this.chunkManager.scheduleUpdateChunkPriorities()` when visibility changes.
  */
-export function withSharedVisibility<T extends{new (...args: any[]): ChunkRequester}>(Base: T) {
+export function withSharedVisibility<T extends Constructor<ChunkRequester>>(Base: T): ConstructorWithMixin<T, SharedVisibilityMixin> {
   return class extends Base {
     visibility: SharedWatchableValue<number>;
 

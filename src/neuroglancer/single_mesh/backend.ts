@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Chunk, ChunkManager, ChunkSource, withChunkManager} from '../chunk_manager/backend';
+import {Chunk, ChunkManager, ChunkSource, withChunkManager, ChunkRequester} from '../chunk_manager/backend';
 import {ChunkPriorityTier} from '../chunk_manager/base';
 import {PriorityGetter} from '../chunk_manager/generic_file_source';
 import {computeVertexNormals} from '../mesh/backend';
@@ -22,7 +22,7 @@ import {GET_SINGLE_MESH_INFO_RPC_ID, SINGLE_MESH_CHUNK_KEY, SINGLE_MESH_LAYER_RP
 import {TypedArray} from '../util/array';
 import {CancellationToken} from '../util/cancellation';
 import {stableStringify} from '../util/json';
-import {getBasePriority, getPriorityTier, withSharedVisibility} from '../visibility_priority/backend';
+import {getBasePriority, getPriorityTier, withSharedVisibility, SharedVisibilityMixin} from '../visibility_priority/backend';
 import {registerPromiseRPC, registerSharedObject, RPC, RPCPromise, SharedObjectCounterpart} from '../worker_rpc';
 
 const SINGLE_MESH_CHUNK_PRIORITY = 50;
@@ -75,14 +75,14 @@ export interface SingleMeshVertexAttributes {
   attributes: Float32Array[];
 }
 
-interface SingleMeshFactory {
+export interface SingleMeshFactory {
   description?: string;
   getMesh:
       (chunkManager: ChunkManager, url: string, getPriority: PriorityGetter,
        cancellationToken: CancellationToken) => Promise<SingleMesh>;
 }
 
-interface SingleMeshVertexAttributesFactory {
+export interface SingleMeshVertexAttributesFactory {
   description?: string;
   getMeshVertexAttributes:
       (chunkManager: ChunkManager, url: string, getPriority: PriorityGetter,
@@ -228,7 +228,7 @@ export class SingleMeshSource extends ChunkSource {
   }
 }
 
-const SingleMeshLayerBase = withSharedVisibility(withChunkManager(SharedObjectCounterpart));
+export const SingleMeshLayerBase = withSharedVisibility(withChunkManager(SharedObjectCounterpart));
 @registerSharedObject(SINGLE_MESH_LAYER_RPC_ID)
 export class SingleMeshLayer extends SingleMeshLayerBase {
   source: SingleMeshSource;
@@ -270,3 +270,5 @@ registerPromiseRPC(
         chunkManager.dispose();
       }
     });
+
+export {ChunkRequester, SharedVisibilityMixin};

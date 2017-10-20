@@ -18,15 +18,15 @@
 import '../shared_disjoint_sets';
 import '../uint64_set';
 
-import {withChunkManager} from '../chunk_manager/backend';
+import {withChunkManager, ChunkRequester} from '../chunk_manager/backend';
 import {Bounds, VisibleSegmentsState} from './base';
 import {SharedDisjointUint64Sets} from '../shared_disjoint_sets';
 import {Uint64Set} from '../uint64_set';
-import {withSharedVisibility} from '../visibility_priority/backend';
+import {withSharedVisibility, SharedVisibilityMixin} from '../visibility_priority/backend';
 import {RPC, SharedObjectCounterpart} from '../worker_rpc';
 import {SharedWatchableValue} from '../shared_watchable_value';
 
-const Base = withSharedVisibility(withChunkManager(SharedObjectCounterpart));
+export const Base = withSharedVisibility(withChunkManager(SharedObjectCounterpart));
 
 export class SegmentationLayerSharedObjectCounterpart extends Base implements VisibleSegmentsState {
   visibleSegments: Uint64Set;
@@ -49,3 +49,5 @@ export class SegmentationLayerSharedObjectCounterpart extends Base implements Vi
     this.registerDisposer(this.clipBounds.changed.add(scheduleUpdateChunkPriorities));
   }
 }
+
+export {ChunkRequester, SharedVisibilityMixin};

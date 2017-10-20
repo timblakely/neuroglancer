@@ -15,7 +15,7 @@
  */
 
 import {ChunkSourceParametersConstructor} from '../../chunk_manager/base';
-import {ChunkManager} from '../../chunk_manager/frontend';
+import {ChunkManager, Chunk} from '../../chunk_manager/frontend';
 import {MultiscaleSliceViewChunkSource, SliceViewChunk, SliceViewChunkSource} from '../frontend';
 import {SliceView} from '../frontend';
 import {RenderLayer as GenericSliceViewRenderLayer} from '../renderlayer';
@@ -136,36 +136,46 @@ export class ParameterizedVectorGraphicsSource<Parameters> extends VectorGraphic
   }
 }
 
+export class SpecializedParameterizedVectorGraphicsSource<Parameters> extends
+  ParameterizedVectorGraphicsSource<Parameters> {
+  parametersConstructor: ChunkSourceParametersConstructor<Parameters>;
+  constructor(
+    chunkManager: ChunkManager, spec: VectorGraphicsChunkSpecification,
+    public parameters: Parameters) {
+  super(chunkManager, spec, parameters);
+  }
+
+  initializeCounterpart(rpc: RPC, options: any) {
+  options['parameters'] = this.parameters;
+  super.initializeCounterpart(rpc, options);
+  }
+
+  static get<Parameters>(
+    chunkManager: ChunkManager, spec: VectorGraphicsChunkSpecification,
+    parameters: Parameters) {
+  return chunkManager.getChunkSource(
+      this, stableStringify({parameters, spec: spec.toObject()}),
+      () => new this(chunkManager, spec, parameters));
+  }
+  toString() {
+  return this.parametersConstructor.stringify(this.parameters);
+  }
+};
+
+export interface SpecializedParameterizedVectorGraphicsSourceWithStatic<Parameters> {
+  get(
+    chunkManager: ChunkManager, spec: VectorGraphicsChunkSpecification,
+    parameters: Parameters): SpecializedParameterizedVectorGraphicsSource<Parameters>;
+  new(...args: any[]): SpecializedParameterizedVectorGraphicsSource<Parameters>;
+}
+
 /**
  * Defines a VectorGraphicsSource for which all state is encapsulated in an object of type
  * Parameters.
  */
 export function defineParameterizedVectorGraphicsSource<Parameters>(
-    parametersConstructor: ChunkSourceParametersConstructor<Parameters>) {
-  const newConstructor = class SpecializedParameterizedVectorGraphicsSource extends
-      ParameterizedVectorGraphicsSource<Parameters> {
-    constructor(
-        chunkManager: ChunkManager, spec: VectorGraphicsChunkSpecification,
-        public parameters: Parameters) {
-      super(chunkManager, spec, parameters);
-    }
-
-    initializeCounterpart(rpc: RPC, options: any) {
-      options['parameters'] = this.parameters;
-      super.initializeCounterpart(rpc, options);
-    }
-
-    static get(
-        chunkManager: ChunkManager, spec: VectorGraphicsChunkSpecification,
-        parameters: Parameters) {
-      return chunkManager.getChunkSource(
-          this, stableStringify({parameters, spec: spec.toObject()}),
-          () => new this(chunkManager, spec, parameters));
-    }
-    toString() {
-      return parametersConstructor.stringify(this.parameters);
-    }
-  };
+    parametersConstructor: ChunkSourceParametersConstructor<Parameters>): SpecializedParameterizedVectorGraphicsSourceWithStatic<Parameters> {
+  const newConstructor = class extends SpecializedParameterizedVectorGraphicsSource<Parameters> {};
   newConstructor.prototype.RPC_TYPE_ID = parametersConstructor.RPC_ID;
   return newConstructor;
 }
@@ -177,3 +187,5 @@ export interface MultiscaleVectorGraphicsChunkSource extends MultiscaleSliceView
    */
   getSources: (options: VectorGraphicsSourceOptions) => VectorGraphicsChunkSource[][];
 }
+
+export {Chunk};

@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import {Chunk, ChunkSource, withChunkManager} from '../chunk_manager/backend';
+import {Chunk, ChunkSource, withChunkManager, ChunkRequester} from '../chunk_manager/backend';
 import {RenderLayer as RenderLayerInterface, SLICEVIEW_RPC_ID, SliceViewBase, SliceViewChunkSource as SliceViewChunkSourceInterface, SliceViewChunkSpecification} from './base';
 import {ChunkLayout} from './chunk_layout';
 import {vec3, vec3Key} from '../util/geom';
 import {NullarySignal} from '../util/signal';
-import {getBasePriority, getPriorityTier, withSharedVisibility} from '../visibility_priority/backend';
+import {getBasePriority, getPriorityTier, withSharedVisibility, SharedVisibilityMixin} from '../visibility_priority/backend';
 import {registerRPC, registerSharedObject, RPC, SharedObjectCounterpart} from '../worker_rpc';
+import {Constructor} from '../util/mixin_helpers';
 
 const BASE_PRIORITY = -1e12;
 const SCALE_PRIORITY_MULTIPLIER = 1e9;
@@ -30,14 +31,14 @@ const tempChunkPosition = vec3.create();
 const tempChunkDataSize = vec3.create();
 const tempCenter = vec3.create();
 
-class SliceViewCounterpartBase extends SliceViewBase {
+export class SliceViewCounterpartBase extends SliceViewBase {
   constructor(rpc: RPC, options: any) {
     super();
     this.initializeSharedObject(rpc, options['id']);
   }
 }
 
-const SliceViewIntermediateBase = withSharedVisibility(withChunkManager(SliceViewCounterpartBase));
+export const SliceViewIntermediateBase = withSharedVisibility(withChunkManager(SliceViewCounterpartBase));
 @registerSharedObject(SLICEVIEW_RPC_ID)
 export class SliceView extends SliceViewIntermediateBase {
   visibleLayers: Map<RenderLayer, SliceViewChunkSource[]>;
@@ -264,3 +265,5 @@ export abstract class ParameterizedSliceViewChunkSource<Parameters> extends Slic
     this.parameters = options['parameters'];
   }
 }
+
+export {SharedVisibilityMixin, Constructor, ChunkRequester};

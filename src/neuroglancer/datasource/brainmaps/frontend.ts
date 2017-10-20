@@ -20,18 +20,18 @@ import {ChunkManager} from '../../chunk_manager/frontend';
 import {BrainmapsInstance, INSTANCE_IDENTIFIERS, INSTANCE_NAMES, makeRequest, PRODUCTION_INSTANCE} from './api';
 import {ChangeSpec, MeshSourceParameters, SkeletonSourceParameters, VolumeChunkEncoding, VolumeSourceParameters} from './base';
 import {GetVolumeOptions, registerDataSourceFactory} from '../factory';
-import {defineParameterizedMeshSource} from '../../mesh/frontend';
-import {parameterizedSkeletonSource} from '../../skeleton/frontend';
+import {defineParameterizedMeshSource, ParameterizedMeshSource} from '../../mesh/frontend';
+import {parameterizedSkeletonSource, SpecializedParameterizedSkeletonSource, SpecializedParameterizedSkeletonSourceWithStatic} from '../../skeleton/frontend';
 import {DataType, VolumeChunkSpecification, VolumeSourceOptions, VolumeType} from '../../sliceview/volume/base';
-import {defineParameterizedVolumeChunkSource, MultiscaleVolumeChunkSource as GenericMultiscaleVolumeChunkSource} from '../../sliceview/volume/frontend';
+import {defineParameterizedVolumeChunkSource, MultiscaleVolumeChunkSource as GenericMultiscaleVolumeChunkSource, ParameterizedVolumeChunkSource} from '../../sliceview/volume/frontend';
 import {StatusMessage} from '../../status';
-import {getPrefixMatches, getPrefixMatchesWithDescriptions} from '../../util/completion';
+import {getPrefixMatches, getPrefixMatchesWithDescriptions, Completion} from '../../util/completion';
 import {vec3} from '../../util/geom';
 import {parseArray, parseQueryStringParameters, parseXYZ, verifyEnumString, verifyFinitePositiveFloat, verifyMapKey, verifyObject, verifyObjectProperty, verifyOptionalString, verifyPositiveInt, verifyString} from '../../util/json';
 
 const VolumeChunkSource = defineParameterizedVolumeChunkSource(VolumeSourceParameters);
 const MeshSource = defineParameterizedMeshSource(MeshSourceParameters);
-const BaseSkeletonSource = parameterizedSkeletonSource(SkeletonSourceParameters);
+export const BaseSkeletonSource = parameterizedSkeletonSource(SkeletonSourceParameters);
 
 const SERVER_DATA_TYPES = new Map<string, DataType>();
 SERVER_DATA_TYPES.set('UINT8', DataType.UINT8);
@@ -264,7 +264,7 @@ export function getVolume(
                         meshesResponse, brainmapsOptions)));
 }
 
-interface ProjectMetadata {
+export interface ProjectMetadata {
   id: string;
   label: string;
   description?: string;
@@ -445,3 +445,5 @@ export function registerBrainmapsDataSource(instance: BrainmapsInstance) {
 }
 
 registerBrainmapsDataSource(PRODUCTION_INSTANCE);
+
+export {ParameterizedVolumeChunkSource, SpecializedParameterizedSkeletonSourceWithStatic, SpecializedParameterizedSkeletonSource, ParameterizedMeshSource, Completion};

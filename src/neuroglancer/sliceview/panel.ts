@@ -23,6 +23,7 @@ import {SliceView, SliceViewRenderHelper} from './frontend';
 import {ElementVisibilityFromTrackableBoolean, TrackableBoolean} from '../trackable_boolean';
 import {identityMat4, mat4, vec3, vec4} from '../util/geom';
 import {startRelativeMouseDrag} from '../util/mouse_drag';
+import {NavigationState} from '../navigation_state';
 import {ViewerState} from '../viewer_state';
 import {FramebufferConfiguration, makeTextureBuffers, OffscreenCopyHelper} from '../webgl/offscreen';
 import {ShaderBuilder, ShaderModule} from '../webgl/shader';
@@ -309,3 +310,5 @@ export class SliceViewPanel extends RenderedDataPanel {
     navigationState.position.changed.dispatch();
   }
 }
+
+export {NavigationState};

@@ -36,6 +36,7 @@ import {WatchableShaderError} from '../webgl/dynamic_shader';
 import {ShaderBuilder, ShaderModule, ShaderProgram} from '../webgl/shader';
 import {setVec4FromUint32} from '../webgl/shader_lib';
 import {RPC} from '../worker_rpc';
+import {VisibilityPriorityAggregator} from '../visibility_priority/frontend';
 
 const glsl_COLORMAPS = require<string>('../webgl/colormaps.glsl');
 
@@ -55,13 +56,13 @@ export function getTrackableFragmentMain(value = DEFAULT_FRAGMENT_MAIN) {
   return new TrackableValue<string>(value, verifyString);
 }
 
-interface VertexAttributeRenderInfo extends VertexAttributeInfo {
+export interface VertexAttributeRenderInfo extends VertexAttributeInfo {
   name: string;
   webglDataType: number;
   glslDataType: string;
 }
 
-class RenderHelper extends RefCounted {
+export class RenderHelper extends RefCounted {
   shaders = new Map<ShaderModule, ShaderProgram|null>();
   shaderGeneration = -1;
   private vertexAttributesKey = stableStringify(this.vertexAttributes);
@@ -413,18 +414,29 @@ export class ParameterizedSkeletonSource<Parameters> extends SkeletonSource {
 /**
  * Defines a SkeletonSource for which all state is encapsulated in an object of type Parameters.
  */
-export function parameterizedSkeletonSource<Parameters>(
-    parametersConstructor: ChunkSourceParametersConstructor<Parameters>) {
-  const newConstructor =
-      class SpecializedParameterizedSkeletonSource extends ParameterizedSkeletonSource<Parameters> {
-    static get(chunkManager: ChunkManager, parameters: Parameters) {
-      return chunkManager.getChunkSource(
-          this, stableStringify(parameters), () => new this(chunkManager, parameters));
-    }
-    toString() {
-      return parametersConstructor.stringify(this.parameters);
-    }
+
+export class SpecializedParameterizedSkeletonSource<Parameters> extends ParameterizedSkeletonSource<Parameters> {
+  parametersConstructor: {stringify(parameters: Parameters): string};
+  static get<Parameters>(chunkManager: ChunkManager, parameters: Parameters) {
+    return chunkManager.getChunkSource(
+        this, stableStringify(parameters), () => new this(chunkManager, parameters));
+  }
+  toString() {
+    return this.parametersConstructor.stringify(this.parameters);
   };
+}
+
+export interface SpecializedParameterizedSkeletonSourceWithStatic<Parameters> {
+  get(chunkManager: ChunkManager, parameters: Parameters): SpecializedParameterizedSkeletonSource<Parameters>;
+  new(...args: any[]): SpecializedParameterizedSkeletonSource<Parameters>;
+}
+
+export function parameterizedSkeletonSource<Parameters>(
+    parametersConstructor: ChunkSourceParametersConstructor<Parameters>): SpecializedParameterizedSkeletonSourceWithStatic<Parameters> {
+  const newConstructor = class extends SpecializedParameterizedSkeletonSource<Parameters> {};
+  (newConstructor as any).parametersConstructor = parametersConstructor;
   newConstructor.prototype.RPC_TYPE_ID = parametersConstructor.RPC_ID;
   return newConstructor;
 }
+
+export {VisibilityPriorityAggregator};
